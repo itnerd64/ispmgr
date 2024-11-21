@@ -119,6 +119,20 @@ case $1 in
     printf "Try 'ispmgr --help' for more options.\n"
     exit 1
   ;;
+
+  'info')
+    checkRun
+    checkData "You must Login first\n" "" "0"
+    echo "### Account Information ###"
+    getInfo "Name:       " "Name:"
+    getInfo "Email:      " "E-mail:"
+    getInfo "Package:    " "Package:"
+    getInfo "Validity:   " "Expiry date:"
+    printf "Username:   %s\n" "$username"
+    getInfo "Client ID:  " "CLIENT ID:"
+    printf "IP Address: %s\n" "$(curl -s https://icanhazip.com)"
+  ;;
+  
   'init')
     init
   ;;
