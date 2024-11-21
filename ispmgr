@@ -27,10 +27,12 @@ init() {
   read -rp "Captive Portal URL: " url
   read -rp "Username: " username
   read -srp "Password: " password && echo
-  echo "cookie=1" >> "$config"
-  echo "url=$url" >> "$config"
-  echo "username=$username" >> "$config"
-  echo "password=$password" >> "$config"
+  {
+    echo "cookie=1"
+    echo "url=$url"
+    echo "username=$username"
+    echo "password=$password"
+  } >> "$config" 
   loadConfig
 }
 
@@ -79,10 +81,10 @@ checkData() {
   local data2="$2"
   local choice="$3"
   if [ "$(curl -ks "$url" | grep -q "$query"; echo $?)" = "$choice" ]; then
-    printf "$data1"
+    printf '%s' "$data1"
     exit 0
   else
-    printf "$data2"
+    printf '%s' "$data2"
   fi
 }
 
@@ -94,13 +96,13 @@ getInfo(){
 }
 
 getIP(){
-  ip="$(curl -s https://ip$1.icanhazip.com)"
-  if [ $? != "0" ]; then
+  if ! ip="$(curl -s https://ip"$1".icanhazip.com)"; then
     ip="N/A"
   fi
-  printf "IP$1 Addr: $ip\n"
+  printf 'IP%s Addr: %s\n' "$1" "$ip"
 }
 
+cookie=""
 config="$HOME/.config/ispmgr.conf"
 query="Internet Access Log-in"
 loadConfig
@@ -134,7 +136,7 @@ case $1 in
   'login')
     checkRun
     checkData "Already Logged in.\n" "" "1"
-    sendRequest "user="$username"&pass="$password"&login=Login"
+    sendRequest "user=""$username""&pass=""$password""&login=Login"
     checkData "Login Successful.\n" "\nLogin Un-Successful.\nPlease check your username and Password.\n" "1"
     sed -i '/^cookie=/d' "$config"
     sed -i '/^url=/d' "$config"
@@ -162,7 +164,7 @@ case $1 in
       exit 1
     fi
     url="$url"chpw
-    sendRequest "user="$username"&opass="$password"&pass1="$newPassword1"&pass2="$newPassword2"&chpass="Change+password
+    sendRequest "user=""$username""&opass=""$password""&pass1=""$newPassword1""&pass2=""$newPassword2""&chpass=Change+password"
     sed -i '/^password=/d' "$config"
     echo "password=$newPassword1" >> "$config"
     loadConfig
@@ -179,7 +181,7 @@ case $1 in
   ;;
   
   *)
-    printf "ispmgr: unrecognized option '"$1"'\n"
+    printf 'ispmgr: unrecognized option %s\n' "'$1'"
     checkRun
     printf "Try 'ispmgr --help' for more options.\n"
     exit 1
