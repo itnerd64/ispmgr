@@ -6,6 +6,11 @@ loadConfig() {
   fi
 }
 
-mkdir -p "$HOME/.config/" && touch "$HOME/.config/ispmgr.sh"
 config="$HOME/.config/ispmgr.conf"
 loadConfig
+
+if [ "$firstRun" = "" ]; then
+  mkdir -p "$HOME/.config/" && touch "$HOME/.config/ispmgr.sh"
+  echo "ispmgr: run setup first"
+  exit 0
+fi
