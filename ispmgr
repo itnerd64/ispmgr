@@ -6,11 +6,28 @@ loadConfig() {
   fi
 }
 
+help() {
+  echo "ISP Manager 1.0, a CLI tool for captive portals"
+  echo "Usage: ispmgr [OPTION]..."
+  echo "--help  display this help section"
+  exit 0
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
-if [ "$firstRun" = "" ]; then
+if [ "$firstRun" = "" ] && [ "$1" = "" ]; then
   mkdir -p "$HOME/.config/" && touch "$HOME/.config/ispmgr.sh"
   echo "ispmgr: run setup first"
+  echo "Try 'ispmgr --help' for more options."
+  exit 0
+
+elif [ "$firstRun" = "" ] && [ "$1" = "--help" ]; then
+  help
+
+elif [ "$firstRun" = "" ] && [ "$1" != "init" ]; then
+  echo "ispmgr: unrecognized option '"$1"'"
+  echo "ispmgr: run setup first"
+  echo "Try 'ispmgr --help' for more options."
   exit 0
 fi
