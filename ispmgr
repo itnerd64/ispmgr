@@ -88,6 +88,14 @@ getInfo(){
   curl -ks "$url" | grep -oP '(?<='"$query"'</span></p></td><td align="left">)[^<]+'
 }
 
+getIP(){
+  ip="$(curl -s https://ip$1.icanhazip.com)"
+  if [ $? != "0" ]; then
+    ip="N/A"
+  fi
+  printf "IP$1 Addr: $ip\n"
+}
+
 config="$HOME/.config/ispmgr.conf"
 query="Internet Access Log-in"
 loadConfig
@@ -108,13 +116,14 @@ case $1 in
     checkRun
     checkData "You must Login first\n" "" "0"
     echo "### Account Information ###"
-    getInfo "Name:       " "Name:"
-    getInfo "Email:      " "E-mail:"
-    getInfo "Package:    " "Package:"
-    getInfo "Validity:   " "Expiry date:"
-    printf "Username:   %s\n" "$username"
-    getInfo "Client ID:  " "CLIENT ID:"
-    printf "IP Address: %s\n" "$(curl -s https://icanhazip.com)"
+    getInfo "Name:      " "Name:"
+    getInfo "Email:     " "E-mail:"
+    getInfo "Package:   " "Package:"
+    getInfo "Validity:  " "Expiry date:"
+    printf "Username:  %s\n" "$username"
+    getInfo "Client ID: " "CLIENT ID:"
+    getIP "v4"
+    getIP "v6"
   ;;
 
   'login')
