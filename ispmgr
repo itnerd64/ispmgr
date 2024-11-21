@@ -33,6 +33,31 @@ checkRun() {
   fi
 }
 
+inputData() {
+  if [ "$cookie" = "" ]; then
+    read -rp "Username: " username
+    read -srp "Password: " password && echo
+    read -rp "Save Credentials? (Y/n): " remember
+    case $remember in
+      ""|[Yy])
+        echo "cookie=1" >> "$config"
+        echo "username=$username" >> "$config"
+        echo "password=$password" >> "$config"
+        loadConfig
+      ;;
+
+      [Nn])
+        printf ""
+      ;;
+
+      *)
+        printf "Please enter a valid choice."
+        exit 0
+      ;;
+    esac
+  fi
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
