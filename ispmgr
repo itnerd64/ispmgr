@@ -20,41 +20,20 @@ help() {
 
 init() {
   read -rp "Captive Portal URL: " url
-  echo "firstRun=1" >> "$config"
+  read -rp "Username: " username
+  read -srp "Password: " password && echo
+  echo "cookie=1" >> "$config"
   echo "url=$url" >> "$config"
+  echo "username=$username" >> "$config"
+  echo "password=$password" >> "$config"
   loadConfig
 }
 
 checkRun() {
-  if [ "$firstRun" = "" ]; then
+  if [ "$cookie" = "" ]; then
     printf "ispmgr: run 'ispmgr init' first\n"
     printf "Try 'ispmgr --help' for more options.\n"
     exit 1
-  fi
-}
-
-inputData() {
-  if [ "$cookie" = "" ]; then
-    read -rp "Username: " username
-    read -srp "Password: " password && echo
-    read -rp "Save Credentials? (Y/n): " remember
-    case $remember in
-      ""|[Yy])
-        echo "cookie=1" >> "$config"
-        echo "username=$username" >> "$config"
-        echo "password=$password" >> "$config"
-        loadConfig
-      ;;
-
-      [Nn])
-        printf ""
-      ;;
-
-      *)
-        printf "Please enter a valid choice."
-        exit 0
-      ;;
-    esac
   fi
 }
 
@@ -67,6 +46,7 @@ clearData() {
 
     [Yy])
       sed -i '/^cookie=/d' "$config"
+      sed -i '/^url=/d' "$config"
       sed -i '/^username=/d' "$config"
       sed -i '/^password=/d' "$config"
       loadConfig
@@ -138,17 +118,19 @@ case $1 in
   ;;
 
   'login')
+    checkRun
     checkData "Already Logged in.\n" "" "1"
-    inputData
     sendRequest "user="$username"&pass="$password"&login=Login"
     checkData "Login Successful.\n" "\nLogin Un-Successful.\nPlease check your username and Password.\n" "1"
     sed -i '/^cookie=/d' "$config"
+    sed -i '/^url=/d' "$config"
     sed -i '/^username=/d' "$config"
     sed -i '/^password=/d' "$config"
     loadConfig
   ;;
 
   'logout')
+    checkRun
     checkData "Already Logged out.\n" "" "0"
     sendRequest "logout=Click+here+to+logout"
     checkData "" "Logout Successful.\n" "1"
@@ -156,6 +138,7 @@ case $1 in
   ;;
 
   'chpasswd')
+    checkRun
     checkData "You must Login first\n" "" "0"
     printf "User: %s\n" "$username"
     read -srp "New Password: " newPassword1 && echo
@@ -173,6 +156,7 @@ case $1 in
   ;;
 
   'delcred')
+    checkRun
     clearData
   ;;
 
