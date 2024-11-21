@@ -12,7 +12,12 @@ loadConfig() {
 help() {
   printf "ISP Manager 1.0, a CLI tool for captive portals\n"
   printf "Usage: ispmgr [OPTION]...\n\n"
-  printf "init        start the setup wizard"
+  printf "init        start the setup wizard\n"
+  printf "info        show account information\n"
+  printf "login       start a session\n"
+  printf "logout      end the session\n"
+  printf "chpasswd    change the session password\n"
+  printf "delcred     delete the locally stored credentials"
   printf "\n--help      display this help section\n"
 
   exit 0
