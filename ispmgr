@@ -89,6 +89,18 @@ sendRequest() {
     --data-raw "$data"
 }
 
+checkData() {
+  local data1="$1"
+  local data2="$2"
+  local choice="$3"
+  if [ "$(curl -ks "$url" | grep -q "$query"; echo $?)" = "$choice" ]; then
+    printf "$data1"
+    exit 0
+  else
+    printf "$data2"
+  fi
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
