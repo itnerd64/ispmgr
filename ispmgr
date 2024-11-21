@@ -172,6 +172,10 @@ case $1 in
     printf "Password changed successfully\n"
   ;;
 
+  'delcred')
+    clearData
+  ;;
+
   '--help')
     help
   ;;
