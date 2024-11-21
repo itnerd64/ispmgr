@@ -101,7 +101,15 @@ checkData() {
   fi
 }
 
+getInfo(){
+  local name="$1"
+  local query="$2"
+  printf "%s" "$name"
+  curl -ks "$url" | grep -oP '(?<='"$query"'</span></p></td><td align="left">)[^<]+'
+}
+
 config="$HOME/.config/ispmgr.conf"
+query="Internet Access Log-in"
 loadConfig
 
 case $1 in
