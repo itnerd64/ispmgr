@@ -38,6 +38,7 @@ init() {
 
 checkRun() {
   if [ "$cookie" = "" ]; then
+    printf "ispmgr: credentials not found\n"
     printf "ispmgr: run 'ispmgr init' first\n"
     printf "Try 'ispmgr --help' for more options.\n"
     exit 1
