@@ -25,25 +25,24 @@ init() {
   loadConfig
 }
 
+checkRun() {
+  if [ "$firstRun" = "" ]; then
+    printf "ispmgr: run 'ispmgr init' first\n"
+    printf "Try 'ispmgr --help' for more options.\n"
+    exit 1
+  fi
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
-if [ "$firstRun" = "" ] && [ "$1" = "" ]; then
-  printf "ispmgr: run setup first\n"
-  printf "Try 'ispmgr --help' for more options.\n"
-  exit 0
-
-elif [ "$firstRun" = "" ] && [ "$1" = "--help" ]; then
-  help
-
-elif [ "$firstRun" = "" ] && [ "$1" != "init" ]; then
-  printf "ispmgr: unrecognized option '"$1"'\n"
-  printf "ispmgr: run setup first\n"
-  printf "Try 'ispmgr --help' for more options.\n"
-  exit 0
-fi
-
 case $1 in
+  '')
+    printf "ispmgr: please supply an argument\n"
+    checkRun
+    printf "Try 'ispmgr --help' for more options.\n"
+    exit 1
+  ;;
   'init')
     init
   ;;
@@ -54,7 +53,8 @@ case $1 in
   
   *)
     printf "ispmgr: unrecognized option '"$1"'\n"
+    checkRun
     printf "Try 'ispmgr --help' for more options.\n"
-    exit 0
+    exit 1
   ;;
 esac
