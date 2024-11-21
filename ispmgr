@@ -58,6 +58,28 @@ inputData() {
   fi
 }
 
+clearData() {
+  read -rp "Delete Credentials? (y/N): " forget
+  case $forget in
+    ""|[Nn])
+      printf ""
+    ;;
+
+    [Yy])
+      sed -i '/^cookie=/d' "$config"
+      sed -i '/^username=/d' "$config"
+      sed -i '/^password=/d' "$config"
+      loadConfig
+      printf "Credentials Deleted\n"
+    ;;
+
+    *)
+      printf "Please enter a valid choice."
+      exit 0
+    ;;
+  esac
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
