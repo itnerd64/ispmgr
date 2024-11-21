@@ -120,6 +120,10 @@ case $1 in
     exit 1
   ;;
 
+  'init')
+    init
+  ;;
+
   'info')
     checkRun
     checkData "You must Login first\n" "" "0"
@@ -132,9 +136,16 @@ case $1 in
     getInfo "Client ID:  " "CLIENT ID:"
     printf "IP Address: %s\n" "$(curl -s https://icanhazip.com)"
   ;;
-  
-  'init')
-    init
+
+  'login')
+    checkData "Already Logged in.\n" "" "1"
+    inputData
+    sendRequest "user="$username"&pass="$password"&login=Login"
+    checkData "Login Successful.\n" "\nLogin Un-Successful.\nPlease check your username and Password.\n" "1"
+    sed -i '/^cookie=/d' "$config"
+    sed -i '/^username=/d' "$config"
+    sed -i '/^password=/d' "$config"
+    loadConfig
   ;;
 
   '--help')
