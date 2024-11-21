@@ -80,6 +80,15 @@ clearData() {
   esac
 }
 
+sendRequest() {
+  local data="$1"
+  curl -ks -o /dev/null "$url" \
+    -X POST -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -H "Referer: $url" \
+    --data-raw "$data"
+}
+
 config="$HOME/.config/ispmgr.conf"
 loadConfig
 
