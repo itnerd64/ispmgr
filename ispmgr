@@ -116,7 +116,13 @@ case $1 in
   ;;
 
   'init')
-    init
+    if [ "$cookie" = "" ]; then
+      init
+    else
+      printf "ispmgr: credentials already exist\n"
+      printf "ispmgr: run 'ispmgr delcred' first\n"
+      exit 1
+    fi
   ;;
 
   'info')
