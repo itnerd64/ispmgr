@@ -148,6 +148,13 @@ case $1 in
     loadConfig
   ;;
 
+  'logout')
+    checkData "Already Logged out.\n" "" "0"
+    sendRequest "logout=Click+here+to+logout"
+    checkData "" "Logout Successful.\n" "1"
+    clearData
+  ;;
+
   '--help')
     help
   ;;
