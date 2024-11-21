@@ -155,6 +155,23 @@ case $1 in
     clearData
   ;;
 
+  'chpasswd')
+    checkData "You must Login first\n" "" "0"
+    printf "User: %s\n" "$username"
+    read -srp "New Password: " newPassword1 && echo
+    read -srp "Re-enter Password: " newPassword2 && echo
+    if [ "$newPassword1" != "$newPassword2" ]; then
+      printf "\nNew passwords don't match.\n"
+      exit 1
+    fi
+    url="$url"chpw
+    sendRequest "user="$username"&opass="$password"&pass1="$newPassword1"&pass2="$newPassword2"&chpass="Change+password
+    sed -i '/^password=/d' "$config"
+    echo "password=$newPassword1" >> "$config"
+    loadConfig
+    printf "Password changed successfully\n"
+  ;;
+
   '--help')
     help
   ;;
