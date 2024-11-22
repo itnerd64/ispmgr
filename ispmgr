@@ -105,6 +105,18 @@ getIP(){
   printf 'IP%s Addr: %s\n' "$1" "$ip"
 }
 
+checkDeps(){
+  for arg in "$@"; do
+    if ! command -v "$arg" &> /dev/null; then
+      printf "ispmgr: %s is not installed\n" "'$arg'"
+    fi
+  done
+  if ! command -v "$1" &> /dev/null || ! command -v "$2" &> /dev/null; then
+    exit 1
+  fi
+}
+
+checkDeps "curl" "jq"
 cookie=""
 config="$HOME/.config/ispmgr.conf"
 query="Internet Access Log-in"
