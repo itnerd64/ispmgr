@@ -10,8 +10,9 @@ A simple CLI tool to interact with your ISP's captive portal.
 
 ## Prerequisites
 - `Linux` is the only operating system supported at the moment
-- `POSIX-compliant` shell is required 
+- `Bash` must be installed on your system. You can check by using `bash --version`
 - `curl` must be installed on your system. You can check by using `curl --version`
+- `jq` must be installed on your system. You can check by using `jq --version`
 - `ipv4 Gateway` must be known beforehand
 
 ## Supported ISPs
